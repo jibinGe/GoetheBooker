@@ -1,0 +1,38 @@
+{
+  "workflow_name": "Universal Modular Automation Profile Mapping",
+  "target_url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm",
+  "steps": [
+    {
+      "action_type": "click",
+      "selector": "#listbox-button-7629229",
+      "tag_name": "BUTTON",
+      "visible_text": "Location",
+      "manual_input_needed": false,
+      "step_number": 1
+    },
+    {
+      "action_type": "click",
+      "selector": "#F-05001305",
+      "tag_name": "LI",
+      "visible_text": "Chennai",
+      "manual_input_needed": false,
+      "step_number": 2
+    },
+    {
+      "action_type": "click",
+      "selector": "button:has-text('DETAILS')",
+      "tag_name": "BUTTON",
+      "visible_text": "DETAILS",
+      "manual_input_needed": false,
+      "step_number": 3
+    },
+    {
+      "action_type": "click",
+      "selector": "a:has-text('SELECT MODULES')",
+      "tag_name": "A",
+      "visible_text": "SELECT MODULES",
+      "manual_input_needed": false,
+      "step_number": 4
+    }
+  ]
+}

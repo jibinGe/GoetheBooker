@@ -1,0 +1,4 @@
+/venv
+/core/__pycache__
+/ui/__pycache__
+/chrome_debug_profile
