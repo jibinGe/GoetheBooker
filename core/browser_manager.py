@@ -25,7 +25,7 @@ class ChromeManager:
 
     @classmethod
     def launch_debug_chrome(cls, port=9222):
-        """Spawns a clean, multi-profile compatible debugging instance of Chrome."""
+        """Spawns a clean, multi-profile compatible debugging instance of Chrome in Incognito mode."""
         chrome_path = cls.get_chrome_path()
         if not chrome_path or not os.path.exists(chrome_path):
             print(f" (SYSTEM ERROR) -> Native Google Chrome installation missing.")
@@ -41,20 +41,20 @@ class ChromeManager:
         except Exception:
             pass
 
-        print(f" (SYSTEM) -> Deploying isolated Chrome instance on port {port}...")
+        print(f" (SYSTEM) -> Deploying isolated Incognito Chrome instance on port {port}...")
         
         # 2. Dynamic profiles paths separation
-        # We create a specific folder path inside the app directory to prevent macOS file locking
         automation_data_dir = os.path.join(os.getcwd(), "chrome_debug_profile")
-        target_profile_directory = "Profile 2"  # Ensure this matches your logged-in profile name
+        target_profile_directory = "Profile 2"  # Keep this assigned to point to your target environment profile
         
         os_type = platform.system()
         flags = [
             chrome_path, 
             f"--remote-debugging-port={port}", 
             f"--remote-debugging-address=127.0.0.1",
-            f"--user-data-dir={automation_data_dir}", # <-- FORCES MAC TO SEPARATE FROM ACTIVE WINDOW LOCKS
+            f"--user-data-dir={automation_data_dir}", 
             f"--profile-directory={target_profile_directory}",
+            "--incognito",                     # 🛠️ THE FIX: Forces the window directly into an Incognito sandbox session
             "--no-first-run",
             "--no-default-browser-check"
         ]
@@ -62,8 +62,8 @@ class ChromeManager:
         if os_type == "Windows":
             subprocess.Popen(flags, creationflags=subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP)
         else:
-            # On macOS, if we give it a unique user-data-dir, it spins up an independent engine process smoothly
+            # On macOS, using the unique user-data-dir combined with --incognito spins up a completely unlinked engine context cleanly
             subprocess.Popen(flags, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
             
-        time.sleep(5.0) # Given an extra second for profile configurations to safely lock onto the port
+        time.sleep(5.0) # Buffer safety window to allow the private browser instance to mount the local port interface securely
         return True

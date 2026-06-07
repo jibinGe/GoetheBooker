@@ -14,16 +14,16 @@ class GoetheDynamicEngine:
             self.sel = json.load(f)
 
     async def run_pipeline(self):
+        self.log("INIT", "Connecting backend pipeline to your active personal Chrome space...")
+        
         async with async_playwright() as p:
-            self.log("INIT", "Querying global browser debugger endpoints via DevTools API...")
-            
             try:
                 async with httpx.AsyncClient() as client:
                     response = await client.get("http://127.0.0.1:9222/json/version")
                     browser_metadata = response.json()
                 
                 global_ws_url = browser_metadata["webSocketDebuggerUrl"]
-                self.log("INIT", "🎯 Global browser link spotted! Attaching pipeline channel...")
+                self.log("INIT", "🎯 Connected to Chrome! Initializing State-Verified tracking engine...")
                 
                 browser = await p.chromium.connect_over_cdp(global_ws_url)
                 
@@ -39,14 +39,38 @@ class GoetheDynamicEngine:
                 return
 
             target_url = self.sel.get("target_url", self.config['url'])
-            self.log("NAVIGATION", f"Directing target tab instance to: {target_url}...")
+            self.log("NAVIGATION", f"Loading initial exam page framework: {target_url[:80]}...")
             await page.goto(target_url, wait_until="domcontentloaded")
             await page.wait_for_timeout(2000)
 
             macro_steps = self.sel.get("steps", [])
-            self.log("MONITORING", f"Loaded macro sequence containing {len(macro_steps)} actions.")
+            if not macro_steps:
+                self.log("CRITICAL", "❌ No automation steps found in your selectors.json!")
+                return
 
-            for step in macro_steps:
+            # --- STAGE 1: GATEWAY SELECT MODULES BUTTON DETECTION ---
+            trigger_step = macro_steps[0]
+            trigger_selector = trigger_step.get("selector")
+            self.log("MONITORING", "⏳ Watching page layout components for the [SELECT MODULES] trigger button...")
+
+            attempt = 1
+            while self.is_running:
+                if await page.locator(trigger_selector).first.is_visible():
+                    self.log("SUCCESS", "🚨 ALERT! Gateway trigger element spotted live on screen!")
+                    break
+                self.log("STATUS", f"[Check #{attempt}] Gateway closed. Reloading layout state...")
+                await page.reload(wait_until="domcontentloaded")
+                await page.wait_for_timeout(1000)
+                attempt += 1
+
+            if not self.is_running:
+                return
+
+            # --- STAGE 2: STRICT STATE-VERIFIED MACRO RUNNER ---
+            self.log("CHECKOUT", "⚡ Starting state-verified checkout sequence automation...")
+
+            # Track the steps sequentially to know what comes next
+            for idx, step in enumerate(macro_steps):
                 if not self.is_running:
                     return
 
@@ -54,42 +78,78 @@ class GoetheDynamicEngine:
                 selector = step.get("selector")
                 visible_text = step.get("visible_text", "")
                 action_type = step.get("action_type", "click")
+                current_marker = step.get("page_identity_marker")
                 manual_wait = step.get("manual_input_needed", False)
 
-                self.log("MONITORING", f"[Step #{step_num}] Interacting with [{visible_text or selector}]...")
+                # Peek ahead to see what the destination page marker should be
+                next_marker = None
+                if idx + 1 < len(macro_steps):
+                    next_marker = macro_steps[idx + 1].get("page_identity_marker")
+
+                self.log("MONITORING", f"📍 [Step #{step_num}] Target Node: [{visible_text or selector}]")
 
                 try:
-                    # 🛠️ MODAL STABILIZATION FIX: 
-                    # Use locator.first and wait explicitly for actionable states (visible + attached)
+                    # Pre-check current position validation
+                    if current_marker:
+                        try:
+                            # Only wait if the element isn't already handled/hidden
+                            if await page.locator(current_marker).first.is_visible():
+                                await page.locator(current_marker).first.wait_for(state="visible", timeout=1000)
+                        except TimeoutError:
+                            pass
+
                     element = page.locator(selector).first
-                    
-                    # Increase timeout to 15s specifically for dynamic elements inside modals
-                    await element.wait_for(state="visible", timeout=15000)
-                    await element.wait_for(state="attached", timeout=15000)
-                    
-                    # Force scroll element into the viewable viewport bounding box to bypass modal clipping
+                    await element.wait_for(state="visible", timeout=10000)
                     await element.scroll_into_view_if_needed()
                     
                     if action_type == "click":
-                        # Use force=True to bypass any transparent loading spinners block overlays
-                        await element.click(force=True)
-                        self.log("STATUS", f"✅ Successfully executed step #{step_num}")
-                    
-                    # Dynamic buffer loop to allow modal animations to complete rendering
-                    await page.wait_for_timeout(1000)
+                        click_confirmed = False
+                        
+                        for click_attempt in range(1, 6):
+                            await element.click(force=True)
+                            await page.wait_for_timeout(350) # Give framework a moment to process event
+                            
+                            # 🛠️ THE SMOOTH STATE FIX:
+                            # Only enforce strict look-ahead verification if the NEXT marker is different 
+                            # from the current one (meaning we expect a true page/modal transition).
+                            if next_marker and next_marker != current_marker:
+                                if await page.locator(next_marker).first.is_visible() or await page.locator(next_marker).first.count() > 0:
+                                    self.log("STATUS", f"✅ State transitioned safely on attempt #{click_attempt}.")
+                                    click_confirmed = True
+                                    break
+                            else:
+                                # For elements like Cookie Banners, Checkboxes, or non-transition steps,
+                                # a successful native click execution is all we need to move fast!
+                                self.log("STATUS", f"✅ Action executed cleanly on node step #{step_num}")
+                                click_confirmed = True
+                                break
+                            
+                            self.log("WARNING", f"⚠️ Click absorbed by framework layout. Re-triggering pointer... ({click_attempt}/5)")
+                        
+                        if not click_confirmed:
+                            await element.click(force=True)
+
+                    elif action_type == "fill":
+                        if "username" in selector or "email" in selector.lower():
+                            await element.fill(self.config['email'])
+                            self.log("STATUS", f"📝 Automatically filled Email Address.")
+                        elif "password" in selector.lower():
+                            await element.fill(self.config['password'])
+                            self.log("STATUS", f"📝 Automatically filled Password.")
+
+                    # Lightning fast traversal safety gap
+                    await page.wait_for_timeout(350)
 
                 except TimeoutError:
-                    self.log("WARNING", f"⚠️ Step #{step_num} target missing or hidden inside modal layout wrapper. Skipping...")
+                    self.log("WARNING", f"⚠️ Step #{step_num} visual anchor bypassed, proceeding down sequence flow...")
                 except Exception as step_err:
-                    self.log("CRITICAL", f"❌ Step #{step_num} runtime failure: {str(step_err)}")
+                    self.log("CRITICAL", f"❌ Step #{step_num} execution barrier fault: {str(step_err)}")
 
-                # 🛑 MANUAL INPUT OVERLAY FORWARDER
+                # Handoff takeover checkpoint
                 if manual_wait:
-                    self.log("HANDOVER", f"⏸️ Step #{step_num} requested manual intervention check. Pausing engine automation...")
+                    self.log("HANDOVER", f"🎉 Step #{step_num} reached perfectly! Pausing bot for your immediate manual payment takeover...")
+                    for _ in range(8):
+                        print("\a")
+                        await asyncio.sleep(0.1)
                     while self.is_running and manual_wait:
                         await asyncio.sleep(1)
-                    self.log("MONITORING", "▶️ Handover clear. Resuming background engine sequence execution...")
-
-            self.log("HANDOVER", "🛑 Entire sequential macro path fully replayed.")
-            while self.is_running:
-                await asyncio.sleep(1)

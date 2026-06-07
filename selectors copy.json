@@ -1,77 +1,93 @@
 {
   "workflow_name": "Universal Modular Automation Profile Mapping",
-  "target_url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm?examId=580BCA8CD787F8858D8B53962CC25D062BDFD72EB8C7AFB15DA804AA8796CCAADDCBECCDD8132A4DDEE8FFD404D34BD6E7FD8AC7528255C9F57FD540CAD0C8B9",
+  "target_url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm",
   "steps": [
     {
-      "step_number": 1,
       "action_type": "click",
-      "selector": "button[data-testid='uc-accept-all-button']",
-      "tag_name": "BUTTON",
-      "visible_text": "Accept All",
-      "page_identity_marker": "button[data-testid='uc-accept-all-button']",
-      "manual_input_needed": false
+      "selector": "div:has-text('LANGUAGE SKILL LEVEL')",
+      "tag_name": "DIV",
+      "visible_text": "LANGUAGE SKILL LEVEL",
+      "manual_input_needed": false,
+      "step_number": 1
     },
     {
-      "step_number": 2,
+      "action_type": "click",
+      "selector": "#listbox-button-7629229",
+      "tag_name": "BUTTON",
+      "visible_text": "Location",
+      "manual_input_needed": false,
+      "step_number": 2
+    },
+    {
+      "action_type": "click",
+      "selector": "#F-05001305",
+      "tag_name": "LI",
+      "visible_text": "Chennai",
+      "manual_input_needed": false,
+      "step_number": 3
+    },
+    {
+      "action_type": "click",
+      "selector": "button:has-text('DETAILS')",
+      "tag_name": "BUTTON",
+      "visible_text": "DETAILS",
+      "manual_input_needed": false,
+      "step_number": 4
+    },
+    {
       "action_type": "click",
       "selector": "a:has-text('SELECT MODULES')",
       "tag_name": "A",
       "visible_text": "SELECT MODULES",
-      "page_identity_marker": "h2:has-text('EXAM DATES FOR ADULTS')",
-      "manual_input_needed": false
+      "manual_input_needed": false,
+      "step_number": 5
     },
     {
-      "step_number": 3,
       "action_type": "click",
       "selector": "label[for=' listening ']",
       "tag_name": "LABEL",
       "visible_text": "Listening",
-      "page_identity_marker": "div.cs-modal__inner",
-      "manual_input_needed": false
+      "manual_input_needed": false,
+      "step_number": 6
     },
     {
-      "step_number": 4,
+      "step_number": 7,
       "action_type": "click",
       "selector": "button.cs-button--arrow_next",
       "tag_name": "BUTTON",
       "visible_text": "continue",
-      "page_identity_marker": "div.cs-modal__inner",
-      "manual_input_needed": false
-    },
-    {
-      "step_number": 5,
-      "action_type": "click",
-      "selector": "button:has-text('Book for myself')",
-      "tag_name": "BUTTON",
-      "visible_text": "Book for myself",
-      "page_identity_marker": "h4.cs-checkbox__exam-avalability",
-      "manual_input_needed": false
-    },
-    {
-      "step_number": 6,
-      "action_type": "fill",
-      "selector": "input#username",
-      "tag_name": "INPUT",
-      "visible_text": "Email Address",
-      "page_identity_marker": "input#username",
-      "manual_input_needed": false
-    },
-    {
-      "step_number": 7,
-      "action_type": "fill",
-      "selector": "input#password",
-      "tag_name": "INPUT",
-      "visible_text": "Password",
-      "page_identity_marker": "input#password",
       "manual_input_needed": false
     },
     {
       "step_number": 8,
       "action_type": "click",
+      "selector": "button:has-text('Book for myself')",
+      "tag_name": "BUTTON",
+      "visible_text": "Book for myself",
+      "manual_input_needed": false
+    },
+    {
+      "step_number": 9,
+      "action_type": "fill",
+      "selector": "input#username",
+      "tag_name": "INPUT",
+      "visible_text": "Email Address",
+      "manual_input_needed": false
+    },
+    {
+      "step_number": 10,
+      "action_type": "fill",
+      "selector": "input#password",
+      "tag_name": "INPUT",
+      "visible_text": "Password",
+      "manual_input_needed": false
+    },
+    {
+      "step_number": 11,
+      "action_type": "click",
       "selector": "input[type='submit'][value='Log in']",
       "tag_name": "INPUT",
       "visible_text": "Log in",
-      "page_identity_marker": "input[name='submit']",
       "manual_input_needed": true
     }
   ]
