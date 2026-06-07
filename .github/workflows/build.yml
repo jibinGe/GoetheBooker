@@ -1,0 +1,27 @@
+name: Build Windows EXE
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install Dependencies
+      run: |
+        pip install pyinstaller playwright httpx
+        
+    - name: Compile EXE
+      run: |
+        pyinstaller --noconfirm --onedir --windowed --add-data "selectors.json;." main.py
+        
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: GoetheBooker-Windows-EXE
+        path: dist/main/
