@@ -90,25 +90,11 @@ class GoetheDynamicEngine:
                     # --- CHECK 2: TARGET AVAILABILITY CHECK ---
                     target_element = page.locator(selector).first
                     try:
-                        # Wait for the element to show up cleanly on screen
-                        await target_element.wait_for(state="visible", timeout=6000)
+                        # Ensure object target is fully visible, rendered, and ready to accept input actions
+                        await target_element.wait_for(state="visible", timeout=10000)
                     except TimeoutError:
-                        # If Step 2 fails, check if the page has already moved ahead to the modules view
-                        if step_num == 2:
-                            self.log("INFO", "⚠️ 'SELECT MODULES' button not found. Checking if layout skipped directly to the selection screen...")
-                            # Check if Step 3's selector (the listening checkbox) is already visible on the page
-                            next_selector = self.steps[2].get("selector") if len(self.steps) > 2 else None
-                            if next_selector and await page.locator(next_selector).first.is_visible():
-                                self.log("SKIP", "⏭️ Context bypass detected! Already on the selection screen. Safely skipping Step #2...")
-                                continue
-                        
-                        # Standard safety check if it wasn't a skip scenario
-                        self.log("WARNING", f"⚠️ Selector `{selector}` failed standard visibility. Trying structural presence check...")
-                        try:
-                            await target_element.wait_for(state="attached", timeout=3000)
-                        except TimeoutError:
-                            self.log("CRITICAL", f"❌ Target completely missing from layout: `{selector}`. Step dropped.")
-                            continue
+                        self.log("CRITICAL", f"❌ Target element selector failed visibility check: `{selector}`. Step dropped.")
+                        continue
 
                     # Cache layout fingerprint before sending mutation triggers
                     url_before = page.url
