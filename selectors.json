@@ -1,6 +1,6 @@
 {
   "workflow_name": "Universal Modular Automation Profile Mapping",
-  "target_url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm?examId=580BCA8CD787F8858D8B53962CC25D062BDFD72EB8C7AFB15DA804AA8796CCAADDCBECCDD8132A4DDEE8FFD404D34BD6E7FD8AC7528255C9F57FD540CAD0C8B9",
+  "target_url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm",
   "steps": [
     {
       "step_number": 1,
@@ -17,7 +17,7 @@
       "selector": "a:has-text('SELECT MODULES')",
       "tag_name": "A",
       "visible_text": "SELECT MODULES",
-      "page_identity_marker": "h2:has-text('EXAM DATES FOR ADULTS')",
+      "page_identity_marker": "a:has-text('SELECT MODULES')",
       "manual_input_needed": false
     },
     {
@@ -26,16 +26,16 @@
       "selector": "label[for=' listening ']",
       "tag_name": "LABEL",
       "visible_text": "Listening",
-      "page_identity_marker": "div.cs-modal__inner",
+      "page_identity_marker": "label[for=' listening ']",
       "manual_input_needed": false
     },
     {
       "step_number": 4,
       "action_type": "click",
-      "selector": "button.cs-button--arrow_next",
+      "selector": "div.cs-modal__inner button.cs-button--arrow_next",
       "tag_name": "BUTTON",
       "visible_text": "continue",
-      "page_identity_marker": "div.cs-modal__inner",
+      "page_identity_marker": "button.cs-button--arrow_next:has-text('continue')",
       "manual_input_needed": false
     },
     {
@@ -44,7 +44,7 @@
       "selector": "button:has-text('Book for myself')",
       "tag_name": "BUTTON",
       "visible_text": "Book for myself",
-      "page_identity_marker": "h4.cs-checkbox__exam-avalability",
+      "page_identity_marker": "button:has-text('Book for myself')",
       "manual_input_needed": false
     },
     {
@@ -68,11 +68,11 @@
     {
       "step_number": 8,
       "action_type": "click",
-      "selector": "input[type='submit'][value='Log in']",
+      "selector": "input[name='submit']",
       "tag_name": "INPUT",
       "visible_text": "Log in",
       "page_identity_marker": "input[name='submit']",
-      "manual_input_needed": true
+      "manual_input_needed": false
     }
   ]
 }

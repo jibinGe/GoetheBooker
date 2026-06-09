@@ -22,7 +22,7 @@ class RecorderTab(ttk.Frame):
 
         ttk.Label(top_frame, text="Universal Entry Point URL:").pack(side="left", padx=5)
         self.url_entry = ttk.Entry(top_frame, font=("Arial", 11))
-        self.url_entry.insert(0, "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm")
+        self.url_entry.insert(0, "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm?examId=5C5C9BDA81DFFB818AD901922CC35F512BD0DD7FEAC4F9B50BFF07AA85CB98AAD9CEEDCDDF1F7F4788E6FE8650DF4282E8FA8B9256815ECCA72FD645C4D79FEC")
         self.url_entry.pack(side="left", fill="x", expand=True, padx=5)
 
         self.rec_btn = ttk.Button(top_frame, text="🔴 START RECORDING", command=self.toggle_recording_session)

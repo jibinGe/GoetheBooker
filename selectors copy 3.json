@@ -1,61 +1,77 @@
 {
   "workflow_name": "Universal Modular Automation Profile Mapping",
-  "target_url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm?examId=0F0A9CDBD18FAA878CDF5FC47D98595478DE8B7FEFC4FDE100A800F98ECACCA88FCEEACD8D457F488EB8FC8206821FD0ECFCDC96538C00CEF227D1409CD1C9EC",
+  "url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm?examId=5C5C9BDA81DFFB818AD901922CC35F512BD0DD7FEAC4F9B50BFF07AA85CB98AAD9CEEDCDDF1F7F4788E6FE8650DF4282E8FA8B9256815ECCA72FD645C4D79FEC?examId=0B08CFD3D3DCF9D4D68C52927E9F0A0429D68C2EEEC0FEB508AF04F9D29799A8DFC2E6998F422E498CBDFFDF50D543D6E7A888CB55D45098A77B86149CD3CCB9",
   "steps": [
     {
+      "step_number": 1,
+      "action_type": "click",
+      "selector": "button[data-testid='uc-accept-all-button']",
+      "tag_name": "BUTTON",
+      "visible_text": "Accept All",
+      "page_identity_marker": "button[data-testid='uc-accept-all-button']",
+      "manual_input_needed": false
+    },
+    {
+      "step_number": 2,
       "action_type": "click",
       "selector": "a:has-text('SELECT MODULES')",
       "tag_name": "A",
       "visible_text": "SELECT MODULES",
-      "manual_input_needed": false,
-      "step_number": 1
-    },
-    {
-      "action_type": "click",
-      "selector": "label[for=' listening ']",
-      "tag_name": "LABEL",
-      "visible_text": "Listening",
-      "manual_input_needed": false,
-      "step_number": 2
+      "page_identity_marker": "h2:has-text('EXAM DATES FOR ADULTS')",
+      "manual_input_needed": false
     },
     {
       "step_number": 3,
       "action_type": "click",
-      "selector": "button.cs-button--arrow_next",
-      "tag_name": "BUTTON",
-      "visible_text": "continue",
+      "selector": "label[for=' listening ']",
+      "tag_name": "LABEL",
+      "visible_text": "Listening",
+      "page_identity_marker": "div.cs-modal__inner",
       "manual_input_needed": false
     },
     {
       "step_number": 4,
       "action_type": "click",
-      "selector": "button:has-text('Book for myself')",
+      "selector": "button.cs-button--arrow_next",
       "tag_name": "BUTTON",
-      "visible_text": "Book for myself",
+      "visible_text": "continue",
+      "page_identity_marker": "div.cs-modal__inner",
       "manual_input_needed": false
     },
     {
       "step_number": 5,
-      "action_type": "fill",
-      "selector": "input#username",
-      "tag_name": "INPUT",
-      "visible_text": "Email Address",
+      "action_type": "click",
+      "selector": "button:has-text('Book for myself')",
+      "tag_name": "BUTTON",
+      "visible_text": "Book for myself",
+      "page_identity_marker": "h4.cs-checkbox__exam-avalability",
       "manual_input_needed": false
     },
     {
       "step_number": 6,
       "action_type": "fill",
-      "selector": "input#password",
+      "selector": "input#username",
       "tag_name": "INPUT",
-      "visible_text": "Password",
+      "visible_text": "Email Address",
+      "page_identity_marker": "input#username",
       "manual_input_needed": false
     },
     {
       "step_number": 7,
+      "action_type": "fill",
+      "selector": "input#password",
+      "tag_name": "INPUT",
+      "visible_text": "Password",
+      "page_identity_marker": "input#password",
+      "manual_input_needed": false
+    },
+    {
+      "step_number": 8,
       "action_type": "click",
       "selector": "input[type='submit'][value='Log in']",
       "tag_name": "INPUT",
       "visible_text": "Log in",
+      "page_identity_marker": "input[name='submit']",
       "manual_input_needed": true
     }
   ]

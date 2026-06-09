@@ -54,7 +54,7 @@ class OperationsTab(ttk.Frame):
             return
 
         config = {
-            "url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm",
+            "url": "https://www.goethe.de/ins/in/en/spr/prf/gzb2.cfm?examId=5C5C9BDA81DFFB818AD901922CC35F512BD0DD7FEAC4F9B50BFF07AA85CB98AAD9CEEDCDDF1F7F4788E6FE8650DF4282E8FA8B9256815ECCA72FD645C4D79FEC",
             "location": self.loc_ent.get(),
             "format": self.form_combo.get(),
             "modules": [m.strip() for m in self.mod_ent.get().split(",") if m.strip()],
